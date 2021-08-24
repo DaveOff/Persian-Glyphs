@@ -1,3 +1,4 @@
+<?php
 class Persian_Glyphs
 {
 	private $_glyphs;
@@ -41,68 +42,67 @@ class Persian_Glyphs
 	}
 	
 	protected function decode($text, $exclude = [])
-    {
+    	{
 		$table = array_flip(get_html_translation_table(HTML_ENTITIES));
 		$table = array_map('utf8_encode', $table);
 		$table['&apos;'] = "'";
-        $newtable = array_diff($table, $exclude);
-        $pieces = explode('&', $text);
-		
-        $text   = array_shift($pieces);
-        foreach ($pieces as $piece) {
-            if ($piece[0] == '#') {
-                if ($piece[1] == 'x') {
-                    $one = '#x';
-                } else {
-                    $one = '#';
-                }
-            } else {
-                $one = '';
-            }
-            $end   = strpos($piece, ';');
-            $start = strlen($one);
-            
-            $two   = substr($piece, $start, $end - $start);
-            $zero  = '&'.$one.$two.';';
+		$newtable = array_diff($table, $exclude);
+		$pieces = explode('&', $text);
+		$text   = array_shift($pieces);
+		foreach ($pieces as $piece) {
+		    if ($piece[0] == '#') {
+			if ($piece[1] == 'x') {
+			    $one = '#x';
+			} else {
+			    $one = '#';
+			}
+		    } else {
+			$one = '';
+		    }
+		    $end   = strpos($piece, ';');
+		    $start = strlen($one);
 
-            $text .= $this->entitiesHelper($one, $two, $zero, $newtable, $exclude). mb_substr($piece, $end+1);
-        }
-        return $text;
-    }
+		    $two   = substr($piece, $start, $end - $start);
+		    $zero  = '&'.$one.$two.';';
+
+		    $text .= $this->entitiesHelper($one, $two, $zero, $newtable, $exclude). mb_substr($piece, $end+1);
+		}
+		 return $text;
+	}
 
 	protected function entitiesHelper($prefix, $codepoint, $original, &$table, &$exclude)
 	{
-        if (!$prefix) {
-            if (isset($table[$original])) {
-                return $table[$original];
-            } else {
-                return $original;
-            }
-        }
-        if ($prefix == '#x') {
-            $codepoint = base_convert($codepoint, 16, 10);
-        }
-        if ($codepoint < 0x80) {
-            $str = chr($codepoint);
-        } elseif ($codepoint < 0x800) {
-            $str = chr(0xC0 | ($codepoint >> 6)) . 
-                   chr(0x80 | ($codepoint & 0x3F));
-        } elseif ($codepoint < 0x10000) {
-            $str = chr(0xE0 | ($codepoint >> 12)) . 
-                   chr(0x80 | (($codepoint >> 6) & 0x3F)) . 
-                   chr(0x80 | ($codepoint & 0x3F));
-        } elseif ($codepoint < 0x200000) {
-            $str = chr(0xF0 | ($codepoint >> 18)) . 
-                   chr(0x80 | (($codepoint >> 12) & 0x3F)) . 
-                   chr(0x80 | (($codepoint >> 6) & 0x3F)) . 
-                   chr(0x80 | ($codepoint & 0x3F));
-        }
-        if (in_array($str, $exclude)) {
-            return $original;
-        } else {
-            return $str;
-        }
-    }
+		if (!$prefix) {
+		    if (isset($table[$original])) {
+			return $table[$original];
+		    } else {
+			return $original;
+		    }
+		}
+		if ($prefix == '#x') {
+		    $codepoint = base_convert($codepoint, 16, 10);
+		}
+		if ($codepoint < 0x80) {
+		    $str = chr($codepoint);
+		} elseif ($codepoint < 0x800) {
+		    $str = chr(0xC0 | ($codepoint >> 6)) . 
+			   chr(0x80 | ($codepoint & 0x3F));
+		} elseif ($codepoint < 0x10000) {
+		    $str = chr(0xE0 | ($codepoint >> 12)) . 
+			   chr(0x80 | (($codepoint >> 6) & 0x3F)) . 
+			   chr(0x80 | ($codepoint & 0x3F));
+		} elseif ($codepoint < 0x200000) {
+		    $str = chr(0xF0 | ($codepoint >> 18)) . 
+			   chr(0x80 | (($codepoint >> 12) & 0x3F)) . 
+			   chr(0x80 | (($codepoint >> 6) & 0x3F)) . 
+			   chr(0x80 | ($codepoint & 0x3F));
+		}
+		if (in_array($str, $exclude)) {
+		    return $original;
+		} else {
+		    return $str;
+		}
+	    }
 
 	protected function charCheck($char, $pos)
 	{
@@ -120,8 +120,8 @@ class Persian_Glyphs
 		return (isset($char[$pos])) ? true : false;
 	}
 
-    public function utf8Glyphs($str)
-    {
+	public function utf8Glyphs($str)
+	{
 		$output = [];
 		$lastType= '';
 		$textPara = explode(' ', $str);
@@ -141,7 +141,7 @@ class Persian_Glyphs
 							continue;
 						}
 					}
-						
+
 					//Middle
 					else if(isset($textArray[$k-1]) && isset($textArray[$k+1])) {
 						if($lastType == 'end' || $lastType == 'zero') {
@@ -159,7 +159,7 @@ class Persian_Glyphs
 								$lastType = 'zero';
 								continue;
 							}
-							
+
 						} else {
 							$output[]= $this->_glyphs[$v][2] . ';';
 							$lastType = 'middle';
