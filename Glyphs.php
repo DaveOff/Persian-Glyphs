@@ -1,7 +1,7 @@
 <?php
 class Persian_Glyphs
 {
-	private $_glyphs;
+    private $_glyphs;
 	
     public function __construct()
     {
@@ -141,7 +141,6 @@ class Persian_Glyphs
 							continue;
 						}
 					}
-
 					//Middle
 					else if(isset($textArray[$k-1]) && isset($textArray[$k+1])) {
 						if($lastType == 'end' || $lastType == 'zero') {
