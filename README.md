@@ -1,5 +1,11 @@
 # Persian-Glyphs
 
+<div align="center">
+
+<a href="#"><img src="https://raw.githubusercontent.com/DaveOff/Persian-Glyphs/main/Persian_Glyphs.png" title="" alt=""></a>
+
+</div>
+
 ### Purpose
 This class takes Persian text (encoded in Windows-1256 character 
 set) as input and performs Persian glyph joining on it and outputs 
